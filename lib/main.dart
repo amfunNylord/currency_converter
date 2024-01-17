@@ -1,0 +1,45 @@
+import 'package:currency_converter/converter.dart';
+import 'package:flutter/material.dart';
+
+void main() => runApp(const MyApp());
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: Scaffold(
+        appBar: AppBar(
+          shadowColor: Colors.white,
+          elevation: 0.0,
+          title: const Text(
+            'Конвертер валют онлайн',
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              fontFamily: 'Roboto',
+            ),
+          ),
+          leading: IconButton(
+              onPressed: () {},
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+              )),
+          backgroundColor: const Color.fromARGB(255, 237, 242, 254),
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
+            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Банкоматы'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.currency_ruble), label: 'Копилка'),
+          ],
+        ),
+        body: const Converter(),
+      ),
+    );
+  }
+}
