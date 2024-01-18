@@ -30,13 +30,18 @@ class MyApp extends StatelessWidget {
               )),
           backgroundColor: const Color.fromARGB(255, 237, 242, 254),
         ),
-        bottomNavigationBar: BottomNavigationBar(
-          items: const <BottomNavigationBarItem>[
-            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
-            BottomNavigationBarItem(icon: Icon(Icons.map), label: 'Банкоматы'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.currency_ruble), label: 'Копилка'),
-          ],
+        bottomNavigationBar: SizedBox(
+          height: 94,
+          child: BottomNavigationBar(
+            iconSize: 40,
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Главная'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.map), label: 'Банкоматы'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.currency_ruble), label: 'Копилка'),
+            ],
+          ),
         ),
         body: const Converter(),
       ),

@@ -1,3 +1,4 @@
+import 'package:currency_converter/choosing_currency.dart';
 import 'package:flutter/material.dart';
 
 class OtherCurrencyInput extends StatefulWidget {
@@ -62,7 +63,18 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                           backgroundColor:
                               const MaterialStatePropertyAll<Color>(
                                   Colors.white)),
-                      onPressed: null,
+                      onPressed: () {
+                        showModalBottomSheet(
+                            isScrollControlled: true,
+                            context: context,
+                            shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(12))),
+                            builder: (context) => const SizedBox(
+                                  height: 684,
+                                  child: ChoosingCurrencyScreen(),
+                                ));
+                      },
                       child: const Row(
                         children: [
                           Icon(

@@ -35,27 +35,29 @@ class Converter extends StatelessWidget {
                     borderRadius: BorderRadius.circular(15.0),
                     color: const Color.fromARGB(255, 255, 235, 182),
                   ),
-                  child: const Row(children: [
-                    Padding(
-                      padding: EdgeInsets.only(left: 12.0),
-                      child: Icon(Icons.message,
-                          color: Color.fromARGB(255, 255, 115, 13)),
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.only(left: 12.0, top: 12.0, bottom: 11.0),
-                      child: SizedBox(
-                        width: 299,
-                        child: Text(
-                          'Все переводы курсов конвертер осуществляет на основе стоимости валют по данным ЦБ РФ.',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w400,
-                              fontSize: 15.0,
-                              color: Colors.black),
+                  child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(left: 12.0, top: 12.0),
+                          child: Icon(Icons.message,
+                              color: Color.fromARGB(255, 255, 115, 13)),
                         ),
-                      ),
-                    )
-                  ]),
+                        Padding(
+                          padding: EdgeInsets.only(
+                              left: 12.0, top: 12.0, bottom: 11.0),
+                          child: SizedBox(
+                            width: 300,
+                            child: Text(
+                              'Все переводы курсов конвертер осуществляет на основе стоимости валют по данным ЦБ РФ.',
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 15.0,
+                                  color: Colors.black),
+                            ),
+                          ),
+                        )
+                      ]),
                 ),
               ),
               const Padding(
