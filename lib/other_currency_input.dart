@@ -55,6 +55,7 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                   padding: const EdgeInsets.only(left: 8),
                   child: ElevatedButton(
                       style: ButtonStyle(
+                          elevation: const MaterialStatePropertyAll(0.0),
                           shape: MaterialStatePropertyAll<OutlinedBorder>(
                               RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(12))),

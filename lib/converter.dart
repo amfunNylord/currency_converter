@@ -8,24 +8,85 @@ class Converter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          padding: const EdgeInsets.only(top: 10),
+          child: SizedBox(
+              width: 382,
+              child: Container(
+                decoration: const BoxDecoration(boxShadow: [
+                  BoxShadow(
+                    color: Color.fromRGBO(0, 0, 0, 0.1),
+                    blurRadius: 10,
+                  )
+                ]),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100),
+                  ),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          onPressed: null,
+                          style: ButtonStyle(
+                              minimumSize: const MaterialStatePropertyAll<Size>(
+                                  Size(187, 42)),
+                              backgroundColor:
+                                  const MaterialStatePropertyAll<Color>(
+                                      Color.fromRGBO(238, 63, 88, 1)),
+                              shape: MaterialStatePropertyAll<OutlinedBorder>(
+                                  RoundedRectangleBorder(
+                                      borderRadius:
+                                          BorderRadius.circular(100)))),
+                          child: const Text('Конвертер',
+                              style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 1.2,
+                                  color: Colors.white)),
+                        ),
+                        ElevatedButton(
+                            style: ButtonStyle(
+                                minimumSize:
+                                    const MaterialStatePropertyAll<Size>(
+                                        Size(187, 42)),
+                                backgroundColor:
+                                    const MaterialStatePropertyAll<Color>(
+                                        Colors.white),
+                                shape: MaterialStatePropertyAll<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(100)))),
+                            onPressed: null,
+                            child: Text(
+                              'Курсы валют',
+                              style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  height: 1.2,
+                                  color: Colors.black.withOpacity(0.4)),
+                            ))
+                      ]),
+                ),
+              )),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 16, left: 16.0, right: 16.0),
           child: Column(
             children: [
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: EdgeInsets.only(top: 16),
-                  child: Text(
-                    'Конвертер валют',
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w600,
-                        fontFamily: 'Roboto'),
-                  ),
+                child: Text(
+                  'Конвертер валют',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 32,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Roboto'),
                 ),
               ),
               Column(
@@ -83,7 +144,8 @@ class Converter extends StatelessWidget {
             ],
           ),
         ),
-        // здесь убрать для сообщения с ошибкой
+        // и эту штуку убрать
+        Expanded(child: Container()),
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Text(
