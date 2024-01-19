@@ -28,49 +28,62 @@ class Converter extends StatelessWidget {
                   ),
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 14.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15.0),
-                    color: const Color.fromARGB(255, 255, 235, 182),
-                  ),
-                  child: const Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.only(left: 12.0, top: 12.0),
-                          child: Icon(Icons.message,
-                              color: Color.fromARGB(255, 255, 115, 13)),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.only(
-                              left: 12.0, top: 12.0, bottom: 11.0),
-                          child: SizedBox(
-                            width: 300,
-                            child: Text(
-                              'Все переводы курсов конвертер осуществляет на основе стоимости валют по данным ЦБ РФ.',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 15.0,
-                                  color: Colors.black),
+              Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 14.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          gradient: LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: <Color>[
+                                const Color.fromARGB(255, 252, 234, 187)
+                                    .withOpacity(0.4),
+                                const Color.fromARGB(255, 255, 235, 182)
+                                    .withOpacity(0.4),
+                              ])),
+                      child: const Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 12.0, top: 12.0),
+                              child: Icon(Icons.message,
+                                  color: Color.fromARGB(255, 255, 115, 13)),
                             ),
-                          ),
-                        )
-                      ]),
-                ),
+                            Padding(
+                              padding: EdgeInsets.only(
+                                  left: 12.0, top: 12.0, bottom: 11.0),
+                              child: SizedBox(
+                                width: 300,
+                                child: Text(
+                                  'Все переводы курсов конвертер осуществляет на основе стоимости валют по данным ЦБ РФ.',
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 15.0,
+                                      color: Colors.black),
+                                ),
+                              ),
+                            )
+                          ]),
+                    ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 20),
+                    child: RubblesInput(),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.only(top: 14),
+                    child: OtherCurrencyInput(),
+                  ),
+                ],
               ),
-              const Padding(
-                padding: EdgeInsets.only(top: 20),
-                child: RubblesInput(),
-              ),
-              const Padding(
-                padding: EdgeInsets.only(top: 14),
-                child: OtherCurrencyInput(),
-              ),
+              // сюда вставлять const ErrorMessage(),
             ],
           ),
         ),
+        // здесь убрать для сообщения с ошибкой
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Text(
