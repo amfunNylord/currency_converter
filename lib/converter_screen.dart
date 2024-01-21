@@ -170,7 +170,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Text(
-            'Данные за $_updatedTime',
+            'Данные за ${_updatedTime.replaceAll('T', ' ')}',
             style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w400,
