@@ -64,11 +64,8 @@ class _RubblesInputState extends State<RubblesInput> {
                                   Colors.white)),
                       onPressed: null,
                       child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.flag,
-                            color: Colors.black,
-                          ),
                           Text(
                             'RUR',
                             style: TextStyle(

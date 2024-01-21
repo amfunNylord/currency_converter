@@ -1,9 +1,30 @@
 import 'package:currency_converter/other_currency_input.dart';
+import 'package:currency_converter/repositories/currency_list/currency_list_repository.dart';
+import 'package:currency_converter/repositories/currency_list/models/currency.dart';
 import 'package:currency_converter/rubbles_input.dart';
 import 'package:flutter/material.dart';
 
-class Converter extends StatelessWidget {
-  const Converter({super.key});
+class ConverterScreen extends StatefulWidget {
+  const ConverterScreen({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _ConverterScreenState();
+}
+
+class _ConverterScreenState extends State<ConverterScreen> {
+  List<Currency>? _currencyList;
+  Currency? _selectedCurrency;
+  String _updatedTime = '';
+
+  @override
+  void initState() {
+    _loadCurrencyList();
+    _getUpdatedTime();
+    if (_currencyList != null) {
+      _selectedCurrency = _currencyList![0];
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -149,7 +170,7 @@ class Converter extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 16),
           child: Text(
-            'Данные за 2023-07-18 15:42:18 GMT+03:00',
+            'Данные за $_updatedTime',
             style: TextStyle(
                 fontFamily: 'Roboto',
                 fontWeight: FontWeight.w400,
@@ -159,5 +180,15 @@ class Converter extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  Future<void> _loadCurrencyList() async {
+    _currencyList = await CurrencyListRepository().getCurrencyList();
+    setState(() {});
+  }
+
+  Future<void> _getUpdatedTime() async {
+    _updatedTime = await CurrencyListRepository().getUpdatedTime();
+    setState(() {});
   }
 }

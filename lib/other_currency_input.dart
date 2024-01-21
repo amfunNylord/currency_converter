@@ -77,11 +77,8 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                                 ));
                       },
                       child: const Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
-                            Icons.flag,
-                            color: Colors.black,
-                          ),
                           Text(
                             'USD',
                             style: TextStyle(
