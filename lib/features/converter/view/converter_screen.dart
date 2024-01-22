@@ -1,7 +1,6 @@
-import 'package:currency_converter/other_currency_input.dart';
+import 'package:currency_converter/features/converter/widgets/widgets.dart';
 import 'package:currency_converter/repositories/currency_list/currency_list_repository.dart';
 import 'package:currency_converter/repositories/currency_list/models/currency.dart';
-import 'package:currency_converter/rubbles_input.dart';
 import 'package:flutter/material.dart';
 
 class ConverterScreen extends StatefulWidget {
@@ -161,11 +160,9 @@ class _ConverterScreenState extends State<ConverterScreen> {
                   ),
                 ],
               ),
-              // сюда вставлять const ErrorMessage(),
             ],
           ),
         ),
-        // и эту штуку убрать
         Expanded(child: Container()),
         Padding(
           padding: const EdgeInsets.only(bottom: 16),

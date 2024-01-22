@@ -7,7 +7,6 @@ class ChoosingCurrencyScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _ChoosingCurrencyScreenState();
 }
 
-// using BottomSheet ?
 class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
   final List<String> _currencyList = [
     'RUR / Российский рубль',

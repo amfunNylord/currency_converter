@@ -1,4 +1,4 @@
-import 'package:currency_converter/choosing_currency.dart';
+import 'package:currency_converter/features/converter/widgets/choosing_currency.dart';
 import 'package:flutter/material.dart';
 
 class OtherCurrencyInput extends StatefulWidget {
