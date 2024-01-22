@@ -1,7 +1,10 @@
+import 'package:currency_converter/features/converter/bloc/converter_bloc.dart';
 import 'package:currency_converter/features/converter/widgets/widgets.dart';
+import 'package:currency_converter/features/error_message/error_message.dart';
 import 'package:currency_converter/repositories/currency_list/currency_list_repository.dart';
 import 'package:currency_converter/repositories/currency_list/models/currency.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ConverterScreen extends StatefulWidget {
   const ConverterScreen({super.key});
@@ -11,17 +14,17 @@ class ConverterScreen extends StatefulWidget {
 }
 
 class _ConverterScreenState extends State<ConverterScreen> {
-  List<Currency>? _currencyList;
   Currency? _selectedCurrency;
   String _updatedTime = '';
 
+  final _currencyListBloc = ConverterBloc(
+    CurrencyListRepository(),
+  );
+
   @override
   void initState() {
-    _loadCurrencyList();
     _getUpdatedTime();
-    if (_currencyList != null) {
-      _selectedCurrency = _currencyList![0];
-    }
+    _currencyListBloc.add(LoadCurrencyList());
     super.initState();
   }
 
@@ -109,79 +112,97 @@ class _ConverterScreenState extends State<ConverterScreen> {
                       fontFamily: 'Roboto'),
                 ),
               ),
-              Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 14.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          gradient: LinearGradient(
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                              colors: <Color>[
-                                const Color.fromARGB(255, 252, 234, 187)
-                                    .withOpacity(0.4),
-                                const Color.fromARGB(255, 255, 235, 182)
-                                    .withOpacity(0.4),
-                              ])),
-                      child: const Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(left: 12.0, top: 12.0),
-                              child: Icon(Icons.message,
-                                  color: Color.fromARGB(255, 255, 115, 13)),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.only(
-                                  left: 12.0, top: 12.0, bottom: 11.0),
-                              child: SizedBox(
-                                width: 300,
-                                child: Text(
-                                  'Все переводы курсов конвертер осуществляет на основе стоимости валют по данным ЦБ РФ.',
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.w400,
-                                      fontSize: 15.0,
-                                      color: Colors.black),
-                                ),
-                              ),
-                            )
-                          ]),
-                    ),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 20),
-                    child: RubblesInput(),
-                  ),
-                  const Padding(
-                    padding: EdgeInsets.only(top: 14),
-                    child: OtherCurrencyInput(),
-                  ),
-                ],
+              BlocBuilder<ConverterBloc, ConverterState>(
+                bloc: _currencyListBloc,
+                builder: (context, state) {
+                  if (state is CurrencyListLoaded) {
+                    return Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.only(top: 14.0),
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15.0),
+                                gradient: LinearGradient(
+                                    begin: Alignment.centerLeft,
+                                    end: Alignment.centerRight,
+                                    colors: <Color>[
+                                      const Color.fromARGB(255, 252, 234, 187)
+                                          .withOpacity(0.4),
+                                      const Color.fromARGB(255, 255, 235, 182)
+                                          .withOpacity(0.4),
+                                    ])),
+                            child: const Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Padding(
+                                    padding:
+                                        EdgeInsets.only(left: 12.0, top: 12.0),
+                                    child: Icon(Icons.message,
+                                        color:
+                                            Color.fromARGB(255, 255, 115, 13)),
+                                  ),
+                                  Padding(
+                                    padding: EdgeInsets.only(
+                                        left: 12.0, top: 12.0, bottom: 11.0),
+                                    child: SizedBox(
+                                      width: 300,
+                                      child: Text(
+                                        'Все переводы курсов конвертер осуществляет на основе стоимости валют по данным ЦБ РФ.',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w400,
+                                            fontSize: 15.0,
+                                            color: Colors.black),
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                          ),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 20),
+                          child: RubblesInput(),
+                        ),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 14),
+                          child: OtherCurrencyInput(),
+                        ),
+                      ],
+                    );
+                  }
+                  if (state is CurrencyListLoadingFailure) {
+                    return ErrorMessage(
+                      currencyListBloc: _currencyListBloc,
+                    );
+                  }
+                  return const Center(child: CircularProgressIndicator());
+                },
               ),
             ],
           ),
         ),
         Expanded(child: Container()),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 16),
-          child: Text(
-            'Данные за ${_updatedTime.replaceAll('T', ' ')}',
-            style: TextStyle(
-                fontFamily: 'Roboto',
-                fontWeight: FontWeight.w400,
-                fontSize: 15,
-                color: Colors.black.withOpacity(0.4)),
-          ),
+        BlocBuilder<ConverterBloc, ConverterState>(
+          bloc: _currencyListBloc,
+          builder: (context, state) {
+            if (state is CurrencyListLoaded) {
+              return Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Text(
+                  'Данные за ${_updatedTime.replaceAll('T', ' ')}',
+                  style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontWeight: FontWeight.w400,
+                      fontSize: 15,
+                      color: Colors.black.withOpacity(0.4)),
+                ),
+              );
+            }
+            return Container();
+          },
         ),
       ],
     );
-  }
-
-  Future<void> _loadCurrencyList() async {
-    _currencyList = await CurrencyListRepository().getCurrencyList();
-    setState(() {});
   }
 
   Future<void> _getUpdatedTime() async {

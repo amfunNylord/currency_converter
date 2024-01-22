@@ -1,7 +1,9 @@
+import 'package:currency_converter/features/converter/bloc/converter_bloc.dart';
 import 'package:flutter/material.dart';
 
 class ErrorMessage extends StatelessWidget {
-  const ErrorMessage({super.key});
+  const ErrorMessage({super.key, required this.currencyListBloc});
+  final ConverterBloc currencyListBloc;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +48,7 @@ class ErrorMessage extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 26),
           child: TextButton(
-              onPressed: () {},
+              onPressed: () => currencyListBloc.add(LoadCurrencyList()),
               style: ButtonStyle(
                   minimumSize:
                       const MaterialStatePropertyAll<Size>(Size(374, 56)),
