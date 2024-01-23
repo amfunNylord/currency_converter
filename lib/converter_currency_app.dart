@@ -1,5 +1,7 @@
 import 'package:currency_converter/features/converter/converter.dart';
+import 'package:currency_converter/repositories/currency_list/curency_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ConverterCurrencyApp extends StatelessWidget {
   const ConverterCurrencyApp({super.key});
@@ -41,7 +43,9 @@ class ConverterCurrencyApp extends StatelessWidget {
             ],
           ),
         ),
-        body: const ConverterScreen(),
+        body: ChangeNotifierProvider(
+            create: (context) => IndexOfSelectedCurrency(),
+            child: const ConverterScreen()),
       ),
     );
   }

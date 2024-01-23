@@ -1,25 +1,33 @@
+import 'package:currency_converter/repositories/currency_list/models/currency.dart';
 import 'package:flutter/material.dart';
 
 class ChoosingCurrencyScreen extends StatefulWidget {
-  const ChoosingCurrencyScreen({super.key});
-
+  const ChoosingCurrencyScreen(
+      {super.key, required this.currencyList, required this.currentCurrency});
+  final List<Currency>? currencyList;
+  final int currentCurrency;
   @override
-  State<StatefulWidget> createState() => _ChoosingCurrencyScreenState();
+  State<StatefulWidget> createState() => _ChoosingCurrencyScreenState(
+        currencyList: currencyList,
+        selectedIndex: currentCurrency,
+      );
 }
 
 class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
-  final List<String> _currencyList = [
-    'RUR / Российский рубль',
-    'USD / Доллар США',
-    'EUR / Евро',
-    'AZN / Азербайджанский манат',
-    'AMD / Армянский драм',
-    'BYN / Белорусский рубль',
-    'KZT / Казахстанский тенге',
-    'KGS / Киргизский сом'
-  ];
+  _ChoosingCurrencyScreenState(
+      {required this.currencyList, required this.selectedIndex});
+  final List<Currency>? currencyList;
+  final Map<String, String> _currencyListText = {
+    'USD': 'Доллар США',
+    'EUR': 'Евро',
+    'AZN': 'Азербайджанский манат',
+    'AMD': 'Армянский драм',
+    'BYN': 'Белорусский рубль',
+    'KZT': 'Казахстанский тенге',
+    'KGS': 'Киргизский сом'
+  };
 
-  int _selectedIndex = 1;
+  int selectedIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -67,21 +75,22 @@ class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
                                 elevation: 0.0,
                                 child: ListTile(
                                   onTap: () =>
-                                      setState(() => _selectedIndex = index),
+                                      setState(() => selectedIndex = index),
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(12),
-                                      side: _selectedIndex == index
+                                      side: selectedIndex == index
                                           ? const BorderSide(
                                               color: Color.fromARGB(
                                                   255, 238, 63, 88))
                                           : BorderSide.none),
-                                  title: Text(_currencyList[index]),
+                                  title: Text(
+                                      '${currencyList![index].name} / ${_currencyListText[currencyList![index].name]!}'),
                                   titleTextStyle: const TextStyle(
                                       color: Color.fromARGB(255, 35, 35, 35),
                                       fontFamily: 'Roboto',
                                       fontWeight: FontWeight.w400,
                                       fontSize: 18),
-                                  selected: index == _selectedIndex,
+                                  selected: index == selectedIndex,
                                   selectedTileColor: Colors.white,
                                   selectedColor:
                                       const Color.fromARGB(255, 35, 35, 35),
@@ -90,7 +99,7 @@ class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
                                   trailing: Container(
                                     width: 26,
                                     height: 26,
-                                    decoration: _selectedIndex == index
+                                    decoration: selectedIndex == index
                                         ? BoxDecoration(
                                             color: const Color.fromARGB(
                                                 255, 238, 63, 88),
@@ -102,7 +111,7 @@ class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
                                                     .withOpacity(0.2)),
                                             borderRadius:
                                                 BorderRadius.circular(12)),
-                                    child: _selectedIndex == index
+                                    child: selectedIndex == index
                                         ? const Icon(
                                             Icons.circle,
                                             color: Colors.white,
@@ -112,7 +121,7 @@ class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
                                   ),
                                 ))),
                       ),
-                  itemCount: _currencyList.length)),
+                  itemCount: _currencyListText.length)),
           Padding(
             padding: const EdgeInsets.only(bottom: 20),
             child: ElevatedButton(
@@ -124,7 +133,7 @@ class _ChoosingCurrencyScreenState extends State<ChoosingCurrencyScreen> {
                           borderRadius: BorderRadius.circular(100))),
                   backgroundColor: const MaterialStatePropertyAll<Color>(
                       Color.fromARGB(255, 36, 84, 232))),
-              onPressed: () => Navigator.pop(context),
+              onPressed: () => Navigator.pop(context, selectedIndex),
               child: const Text('Применить',
                   style: TextStyle(
                       color: Colors.white,

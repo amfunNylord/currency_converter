@@ -1,8 +1,7 @@
 import 'package:currency_converter/features/converter/bloc/converter_bloc.dart';
 import 'package:currency_converter/features/converter/widgets/widgets.dart';
 import 'package:currency_converter/features/error_message/error_message.dart';
-import 'package:currency_converter/repositories/currency_list/currency_list_repository.dart';
-import 'package:currency_converter/repositories/currency_list/models/currency.dart';
+import 'package:currency_converter/repositories/currency_list/curency_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -14,16 +13,16 @@ class ConverterScreen extends StatefulWidget {
 }
 
 class _ConverterScreenState extends State<ConverterScreen> {
-  Currency? _selectedCurrency;
-  String _updatedTime = '';
-
   final _currencyListBloc = ConverterBloc(
     CurrencyListRepository(),
   );
 
+  String? _updatedTime;
+  List<Currency>? _currencyList;
+  final IndexOfSelectedCurrency _selectedCurrency = IndexOfSelectedCurrency();
+
   @override
   void initState() {
-    _getUpdatedTime();
     _currencyListBloc.add(LoadCurrencyList());
     super.initState();
   }
@@ -116,6 +115,9 @@ class _ConverterScreenState extends State<ConverterScreen> {
                 bloc: _currencyListBloc,
                 builder: (context, state) {
                   if (state is CurrencyListLoaded) {
+                    _currencyList =
+                        _currencyListBloc.currencyRepository.currentList;
+
                     return Column(
                       children: [
                         Padding(
@@ -159,13 +161,19 @@ class _ConverterScreenState extends State<ConverterScreen> {
                                 ]),
                           ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 20),
-                          child: RubblesInput(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20),
+                          child: RubblesInput(
+                            currencyList: _currencyList,
+                            currentCurrency: _selectedCurrency,
+                          ),
                         ),
-                        const Padding(
-                          padding: EdgeInsets.only(top: 14),
-                          child: OtherCurrencyInput(),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 14),
+                          child: OtherCurrencyInput(
+                            currencyList: _currencyList,
+                            currentCurrency: _selectedCurrency,
+                          ),
                         ),
                       ],
                     );
@@ -186,10 +194,11 @@ class _ConverterScreenState extends State<ConverterScreen> {
           bloc: _currencyListBloc,
           builder: (context, state) {
             if (state is CurrencyListLoaded) {
+              _updatedTime = _currencyListBloc.currencyRepository.currentTime;
               return Padding(
                 padding: const EdgeInsets.only(bottom: 16),
                 child: Text(
-                  'Данные за ${_updatedTime.replaceAll('T', ' ')}',
+                  'Данные за ${_updatedTime?.replaceAll('T', ' ')}',
                   style: TextStyle(
                       fontFamily: 'Roboto',
                       fontWeight: FontWeight.w400,
@@ -203,10 +212,5 @@ class _ConverterScreenState extends State<ConverterScreen> {
         ),
       ],
     );
-  }
-
-  Future<void> _getUpdatedTime() async {
-    _updatedTime = await CurrencyListRepository().getUpdatedTime();
-    setState(() {});
   }
 }

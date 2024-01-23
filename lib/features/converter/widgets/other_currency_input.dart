@@ -1,14 +1,34 @@
 import 'package:currency_converter/features/converter/widgets/choosing_currency.dart';
+import 'package:currency_converter/repositories/currency_list/curency_list.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class OtherCurrencyInput extends StatefulWidget {
-  const OtherCurrencyInput({super.key});
+  const OtherCurrencyInput({
+    super.key,
+    required this.currencyList,
+    required this.currentCurrency,
+  });
+
+  final List<Currency>? currencyList;
+  final IndexOfSelectedCurrency currentCurrency;
 
   @override
-  State<StatefulWidget> createState() => _OtherCurrencyInputState();
+  State<StatefulWidget> createState() => _OtherCurrencyInputState(
+        currencyList: currencyList,
+        currentCurrency: currentCurrency,
+      );
 }
 
 class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
+  _OtherCurrencyInputState({
+    required this.currencyList,
+    required this.currentCurrency,
+  });
+
+  final List<Currency>? currencyList;
+  final IndexOfSelectedCurrency currentCurrency;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -53,59 +73,76 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                     )),
                 Padding(
                   padding: const EdgeInsets.only(left: 8),
-                  child: ElevatedButton(
-                      style: ButtonStyle(
-                          elevation: const MaterialStatePropertyAll(0.0),
-                          shape: MaterialStatePropertyAll<OutlinedBorder>(
-                              RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12))),
-                          fixedSize: const MaterialStatePropertyAll<Size>(
-                              Size(112, 50)),
-                          backgroundColor:
-                              const MaterialStatePropertyAll<Color>(
-                                  Colors.white)),
-                      onPressed: () {
-                        showModalBottomSheet(
-                            isScrollControlled: true,
-                            context: context,
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(12))),
-                            builder: (context) => const SizedBox(
-                                  height: 684,
-                                  child: ChoosingCurrencyScreen(),
-                                ));
-                      },
-                      child: const Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            'USD',
-                            style: TextStyle(
-                              fontFamily: 'Roboto',
-                              fontWeight: FontWeight.w600,
-                              fontSize: 16,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.black,
-                          )
-                        ],
-                      )),
+                  child: Consumer<IndexOfSelectedCurrency>(
+                    builder: (context, currentCurrency, child) =>
+                        ElevatedButton(
+                            style: ButtonStyle(
+                                elevation: const MaterialStatePropertyAll(0.0),
+                                shape: MaterialStatePropertyAll<OutlinedBorder>(
+                                    RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(12))),
+                                fixedSize: const MaterialStatePropertyAll<Size>(
+                                    Size(112, 50)),
+                                backgroundColor:
+                                    const MaterialStatePropertyAll<Color>(
+                                        Colors.white)),
+                            onPressed: () {
+                              showModalBottomSheet(
+                                  isScrollControlled: true,
+                                  context: context,
+                                  shape: const RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.vertical(
+                                          top: Radius.circular(12))),
+                                  builder: (context) => SizedBox(
+                                        height: 684,
+                                        child: ChoosingCurrencyScreen(
+                                          currencyList: currencyList,
+                                          currentCurrency:
+                                              currentCurrency.index,
+                                        ),
+                                      )).then((value) => context
+                                  .read<IndexOfSelectedCurrency>()
+                                  .updateIndex(value));
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Consumer<IndexOfSelectedCurrency>(
+                                  builder: (context, currentCurrency, child) {
+                                    return Text(
+                                      currencyList![currentCurrency.index].name,
+                                      style: const TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 16,
+                                        color: Colors.black,
+                                      ),
+                                    );
+                                  },
+                                ),
+                                const Icon(
+                                  Icons.arrow_drop_down,
+                                  color: Colors.black,
+                                )
+                              ],
+                            )),
+                  ),
                 ),
               ],
             ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 16),
-            child: Text('1 USD = 0.0111 RUR',
-                style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    fontStyle: FontStyle.italic,
-                    color: Colors.black.withOpacity(0.5))),
+            child: Consumer<IndexOfSelectedCurrency>(
+              builder: (context, currentCurrency, child) => Text(
+                  '1 ${currencyList![currentCurrency.index].name} = ${(1 / currencyList![currentCurrency.index].priceInRUB).toStringAsFixed(4)} RUR',
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      fontStyle: FontStyle.italic,
+                      color: Colors.black.withOpacity(0.5))),
+            ),
           ),
         ]),
       ),

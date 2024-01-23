@@ -5,16 +5,22 @@ import 'package:dio/dio.dart';
 String apiURL = 'https://www.cbr-xml-daily.ru/daily_json.js';
 
 class CurrencyListRepository {
-  Future<String> getUpdatedTime() async {
-    final response = await Dio().get(apiURL);
-    final data = jsonDecode(response.data) as Map<String, dynamic>;
-    final String timestamp = data['Timestamp'];
-    return timestamp;
+  List<Currency>? _currentList;
+  String? _currentTime;
+
+  List<Currency>? get currentList {
+    return _currentList;
+  }
+
+  String? get currentTime {
+    return _currentTime;
   }
 
   Future<List<Currency>> getCurrencyList() async {
     final response = await Dio().get(apiURL);
     final data = jsonDecode(response.data) as Map<String, dynamic>;
+
+    _currentTime = data['Timestamp'];
 
     final currencies = data['Valute'] as Map<String, dynamic>;
     final allCurrencyList = currencies.entries
@@ -38,6 +44,7 @@ class CurrencyListRepository {
           neededCurrencyList.add(element);
       }
     }
+    _currentList = neededCurrencyList;
     return neededCurrencyList;
   }
 }
