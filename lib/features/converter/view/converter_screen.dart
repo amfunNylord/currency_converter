@@ -4,6 +4,7 @@ import 'package:currency_converter/features/error_message/error_message.dart';
 import 'package:currency_converter/repositories/currency_list/curency_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class ConverterScreen extends StatefulWidget {
   const ConverterScreen({super.key});
@@ -19,7 +20,10 @@ class _ConverterScreenState extends State<ConverterScreen> {
 
   String? _updatedTime;
   List<Currency>? _currencyList;
-  final IndexOfSelectedCurrency _selectedCurrency = IndexOfSelectedCurrency();
+  final IndexOfSelectedCurrency selectedCurrency = IndexOfSelectedCurrency();
+
+  TextEditingController rubblesController = TextEditingController();
+  TextEditingController otherController = TextEditingController();
 
   @override
   void initState() {
@@ -163,16 +167,44 @@ class _ConverterScreenState extends State<ConverterScreen> {
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 20),
-                          child: RubblesInput(
-                            currencyList: _currencyList,
-                            currentCurrency: _selectedCurrency,
+                          child: Consumer<IndexOfSelectedCurrency>(
+                            builder: (context, selectedCurrency, child) =>
+                                RubblesInput(
+                              currencyList: _currencyList,
+                              currentCurrency: selectedCurrency,
+                              rubblesController: rubblesController,
+                              onTextChanged: (text) {
+                                setState(() {
+                                  double num = double.tryParse(text) ?? 0;
+                                  double result = num /
+                                      _currencyList![selectedCurrency.index]
+                                          .priceInRUB;
+                                  otherController.text =
+                                      result.toStringAsFixed(2);
+                                });
+                              },
+                            ),
                           ),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(top: 14),
-                          child: OtherCurrencyInput(
-                            currencyList: _currencyList,
-                            currentCurrency: _selectedCurrency,
+                          child: Consumer<IndexOfSelectedCurrency>(
+                            builder: (context, selectedCurrency, child) =>
+                                OtherCurrencyInput(
+                              currencyList: _currencyList,
+                              currentCurrency: selectedCurrency,
+                              currencyController: otherController,
+                              onTextChanged: (text) {
+                                setState(() {
+                                  double num = double.tryParse(text) ?? 0;
+                                  double result = num *
+                                      _currencyList![selectedCurrency.index]
+                                          .priceInRUB;
+                                  rubblesController.text =
+                                      result.toStringAsFixed(2);
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ],

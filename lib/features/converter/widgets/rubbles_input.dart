@@ -4,22 +4,43 @@ import '../../../repositories/currency_list/curency_list.dart';
 
 class RubblesInput extends StatefulWidget {
   const RubblesInput(
-      {super.key, required this.currencyList, required this.currentCurrency});
+      {super.key,
+      required this.currencyList,
+      required this.currentCurrency,
+      required this.rubblesController,
+      required this.onTextChanged});
 
   final List<Currency>? currencyList;
   final IndexOfSelectedCurrency currentCurrency;
+  final TextEditingController rubblesController;
+  final ValueChanged<String>? onTextChanged;
 
   @override
   State<StatefulWidget> createState() => _RubblesInputState(
-      currencyList: currencyList, currentCurrency: currentCurrency);
+      currencyList: currencyList,
+      currentCurrency: currentCurrency,
+      rubblesController: rubblesController,
+      onTextChanged: onTextChanged);
 }
 
 class _RubblesInputState extends State<RubblesInput> {
   _RubblesInputState(
-      {required this.currencyList, required this.currentCurrency});
+      {required this.currencyList,
+      required this.currentCurrency,
+      required this.rubblesController,
+      required this.onTextChanged});
 
   final List<Currency>? currencyList;
   final IndexOfSelectedCurrency currentCurrency;
+
+  final TextEditingController rubblesController;
+  final ValueChanged<String>? onTextChanged;
+
+  @override
+  void dispose() {
+    rubblesController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +66,12 @@ class _RubblesInputState extends State<RubblesInput> {
                 SizedBox(
                     width: 210,
                     child: TextField(
+                      controller: rubblesController,
+                      onChanged: (text) {
+                        if (onTextChanged != null) {
+                          onTextChanged!(text);
+                        }
+                      },
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 24,

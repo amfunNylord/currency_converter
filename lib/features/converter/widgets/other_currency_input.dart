@@ -4,19 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class OtherCurrencyInput extends StatefulWidget {
-  const OtherCurrencyInput({
-    super.key,
-    required this.currencyList,
-    required this.currentCurrency,
-  });
+  const OtherCurrencyInput(
+      {super.key,
+      required this.currencyList,
+      required this.currentCurrency,
+      required this.currencyController,
+      required this.onTextChanged});
 
   final List<Currency>? currencyList;
   final IndexOfSelectedCurrency currentCurrency;
+  final TextEditingController currencyController;
+  final ValueChanged<String>? onTextChanged;
 
   @override
   State<StatefulWidget> createState() => _OtherCurrencyInputState(
         currencyList: currencyList,
         currentCurrency: currentCurrency,
+        currencyController: currencyController,
+        onTextChanged: onTextChanged,
       );
 }
 
@@ -24,10 +29,14 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
   _OtherCurrencyInputState({
     required this.currencyList,
     required this.currentCurrency,
+    required this.currencyController,
+    required this.onTextChanged,
   });
 
   final List<Currency>? currencyList;
   final IndexOfSelectedCurrency currentCurrency;
+  final TextEditingController currencyController;
+  final ValueChanged<String>? onTextChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +62,12 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                 SizedBox(
                     width: 210,
                     child: TextField(
+                      controller: currencyController,
+                      onChanged: (text) {
+                        if (onTextChanged != null) {
+                          onTextChanged!(text);
+                        }
+                      },
                       style: const TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 24,
@@ -103,7 +118,7 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                                         ),
                                       )).then((value) => context
                                   .read<IndexOfSelectedCurrency>()
-                                  .updateIndex(value));
+                                  .updateIndex(value ?? currentCurrency.index));
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
