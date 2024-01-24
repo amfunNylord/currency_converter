@@ -198,6 +198,7 @@ class _ConverterScreenState extends State<ConverterScreen> {
                               currencyList: _currencyList,
                               currentCurrency: selectedCurrency,
                               currencyController: otherController,
+                              rubblesController: rubblesController,
                               onTextChanged: (text) {
                                 setState(() {
                                   double num = double.tryParse(text) ?? -1;

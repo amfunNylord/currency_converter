@@ -9,11 +9,13 @@ class OtherCurrencyInput extends StatefulWidget {
       required this.currencyList,
       required this.currentCurrency,
       required this.currencyController,
-      required this.onTextChanged});
+      required this.onTextChanged,
+      required this.rubblesController});
 
   final List<Currency>? currencyList;
   final IndexOfSelectedCurrency currentCurrency;
   final TextEditingController currencyController;
+  final TextEditingController rubblesController;
   final ValueChanged<String>? onTextChanged;
 
   @override
@@ -22,20 +24,22 @@ class OtherCurrencyInput extends StatefulWidget {
         currentCurrency: currentCurrency,
         currencyController: currencyController,
         onTextChanged: onTextChanged,
+        rubblesController: rubblesController,
       );
 }
 
 class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
-  _OtherCurrencyInputState({
-    required this.currencyList,
-    required this.currentCurrency,
-    required this.currencyController,
-    required this.onTextChanged,
-  });
+  _OtherCurrencyInputState(
+      {required this.currencyList,
+      required this.currentCurrency,
+      required this.currencyController,
+      required this.onTextChanged,
+      required this.rubblesController});
 
   final List<Currency>? currencyList;
   final IndexOfSelectedCurrency currentCurrency;
   final TextEditingController currencyController;
+  final TextEditingController rubblesController;
   final ValueChanged<String>? onTextChanged;
 
   @override
@@ -116,9 +120,24 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
                                           currentCurrency:
                                               currentCurrency.index,
                                         ),
-                                      )).then((value) => context
-                                  .read<IndexOfSelectedCurrency>()
-                                  .updateIndex(value ?? currentCurrency.index));
+                                      )).then((value) {
+                                context
+                                    .read<IndexOfSelectedCurrency>()
+                                    .updateIndex(
+                                        value ?? currentCurrency.index);
+                                double num =
+                                    double.tryParse(rubblesController.text) ??
+                                        -1;
+                                if (num < 0) {
+                                  currencyController.text = '';
+                                  return;
+                                }
+                                double result = num /
+                                    currencyList![currentCurrency.index]
+                                        .priceInRUB;
+                                currencyController.text =
+                                    result.toStringAsFixed(2);
+                              });
                             },
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
