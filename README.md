@@ -1,16 +1,27 @@
-# currency_converter
+# Конвертер валют(currency_converter)
+Приложение, в котором можно конвертировать рубли в другую валюту из имеющихся в списке.
 
-A new Flutter project.
+## Технологии
+- [Dart] (https://dart.dev/)
+- [Flutter] (https://flutter.dev/)
 
-## Getting Started
+## Скриншоты
+Начальный экран
 
-This project is a starting point for a Flutter application.
+![start_screen](images/start_screen.png)
 
-A few resources to get you started if this is your first Flutter project:
+Экран ошибки
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+![error_screen](images/error_screen.png)
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Конвертация №1
+
+![converting1](images/converting1.png)
+
+Экран выбора валюты
+
+![choosing_currrency_screen](images/choosing_currency_screen.png)
+
+Конвертация №2
+
+![converting2](images/converting2.png)
