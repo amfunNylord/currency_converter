@@ -175,7 +175,11 @@ class _ConverterScreenState extends State<ConverterScreen> {
                               rubblesController: rubblesController,
                               onTextChanged: (text) {
                                 setState(() {
-                                  double num = double.tryParse(text) ?? 0;
+                                  double num = double.tryParse(text) ?? -1;
+                                  if (num < 0) {
+                                    otherController.text = '';
+                                    return;
+                                  }
                                   double result = num /
                                       _currencyList![selectedCurrency.index]
                                           .priceInRUB;
@@ -196,7 +200,11 @@ class _ConverterScreenState extends State<ConverterScreen> {
                               currencyController: otherController,
                               onTextChanged: (text) {
                                 setState(() {
-                                  double num = double.tryParse(text) ?? 0;
+                                  double num = double.tryParse(text) ?? -1;
+                                  if (num < 0) {
+                                    rubblesController.text = '';
+                                    return;
+                                  }
                                   double result = num *
                                       _currencyList![selectedCurrency.index]
                                           .priceInRUB;

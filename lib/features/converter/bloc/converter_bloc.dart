@@ -13,7 +13,7 @@ class ConverterBloc extends Bloc<ConverterEvent, ConverterState> {
         emit(ConverterInitial());
         final currencyList = await currencyRepository.getCurrencyList();
         emit(CurrencyListLoaded(currencyList: currencyList));
-      } on Exception catch (e) {
+      } catch (e) {
         emit(CurrencyListLoadingFailure(exception: e));
       }
     });

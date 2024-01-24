@@ -149,15 +149,13 @@ class _OtherCurrencyInputState extends State<OtherCurrencyInput> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 16),
-            child: Consumer<IndexOfSelectedCurrency>(
-              builder: (context, currentCurrency, child) => Text(
-                  '1 ${currencyList![currentCurrency.index].name} = ${(1 / currencyList![currentCurrency.index].priceInRUB).toStringAsFixed(4)} RUR',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                      color: Colors.black.withOpacity(0.5))),
-            ),
+            child: Text(
+                '1 ${currencyList![currentCurrency.index].name} = ${(1 / currencyList![currentCurrency.index].priceInRUB).toStringAsFixed(4)} RUR',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black.withOpacity(0.5))),
           ),
         ]),
       ),

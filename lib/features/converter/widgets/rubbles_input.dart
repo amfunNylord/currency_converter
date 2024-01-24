@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../../../repositories/currency_list/curency_list.dart';
 
 class RubblesInput extends StatefulWidget {
@@ -127,15 +126,13 @@ class _RubblesInputState extends State<RubblesInput> {
           ),
           Padding(
             padding: const EdgeInsets.only(top: 12, bottom: 16),
-            child: Consumer<IndexOfSelectedCurrency>(
-              builder: (context, currentCurrency, child) => Text(
-                  '1 RUR = ${currencyList?[currentCurrency.index].priceInRUB.toStringAsFixed(4)} ${currencyList?[currentCurrency.index].name}',
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                      fontStyle: FontStyle.italic,
-                      color: Colors.black.withOpacity(0.5))),
-            ),
+            child: Text(
+                '1 RUR = ${currencyList?[currentCurrency.index].priceInRUB.toStringAsFixed(4)} ${currencyList?[currentCurrency.index].name}',
+                style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    fontStyle: FontStyle.italic,
+                    color: Colors.black.withOpacity(0.5))),
           ),
         ]),
       ),
